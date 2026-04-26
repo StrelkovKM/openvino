@@ -279,11 +279,11 @@ const std::vector<ExecutorImplementation<ConvAttrs>>& getImplementations() {
         
 
         OV_CPU_INSTANCE_RISCV64(
-            "jit_rvv_1x1_convolution_fwd_t", ExecutorType::Dnnl, OperationType::Convolution,
+            "convolution_dnnl_ncsp_ncsp", ExecutorType::Dnnl, OperationType::Convolution,
             // supports
             [](const ConvConfig& config, const MemoryFormatFilter& memoryFormatFilter) -> bool {
                 VERIFY(!isQuantized(config), UNSUPPORTED_SRC_PRECISIONS);
-                VERIFY(config.attrs.postOps.empty(), UNSUPPORTED_POST_OPS);
+                VERIFY(!hasPostOp<DepthwiseConvolutionPostOp>(config.attrs.postOps), UNSUPPORTED_POST_OPS);
                 return MatchesMemoryFormatFilter(config.descs,
                                                  LayoutConfig{LayoutType::ncsp, LayoutType::ncsp, LayoutType::ncsp, LayoutType::ncsp},
                                                  memoryFormatFilter,
@@ -296,22 +296,22 @@ const std::vector<ExecutorImplementation<ConvAttrs>>& getImplementations() {
             )
 
         OV_CPU_INSTANCE_RISCV64(
-            "riscv_gemm_convolution_fwd_t", ExecutorType::Dnnl, OperationType::Convolution,
+            "convolution_dnnl_nspc_nspc", ExecutorType::Dnnl, OperationType::Convolution,
             // supports
             [](const ConvConfig& config, const MemoryFormatFilter& memoryFormatFilter) -> bool {
                 VERIFY(!isQuantized(config), UNSUPPORTED_SRC_PRECISIONS);
                 VERIFY(config.attrs.postOps.empty(), UNSUPPORTED_POST_OPS);
                 return MatchesMemoryFormatFilter(config.descs,
-                                                 LayoutConfig{LayoutType::ncsp, LayoutType::ncsp, LayoutType::ncsp, LayoutType::ncsp},
+                                                 LayoutConfig{LayoutType::nspc, LayoutType::ncsp, LayoutType::nspc, LayoutType::nspc},
                                                  memoryFormatFilter,
                                                  dnnlConvolutionMappingNotation);
             },
             // createOptimalConfig
-            CreateOptimalConfigDefault{{LayoutType::ncsp, LayoutType::ncsp, LayoutType::ncsp, LayoutType::ncsp}},
+            CreateOptimalConfigDefault{{LayoutType::nspc, LayoutType::ncsp, LayoutType::nspc, LayoutType::nspc}},
             AcceptsAnyShape<ConvAttrs>,
             CreateDnnlDefault<DnnlConvolutionPrimitive, ConvAttrs>{}
             )
-        
+
         OV_CPU_INSTANCE_RISCV64(
             "convolution_dnnl_ref_ncsp", ExecutorType::Dnnl, OperationType::Convolution,
             // supports
@@ -329,7 +329,7 @@ const std::vector<ExecutorImplementation<ConvAttrs>>& getImplementations() {
             CreateDnnlDefault<DnnlConvolutionPrimitive, ConvAttrs>{}
             )
     };
-    std::cout << "Registered " << convolutionImplementations.size() << " convolution implementations." << std::endl;
+    
     return convolutionImplementations;
 }
 // clang-format on
