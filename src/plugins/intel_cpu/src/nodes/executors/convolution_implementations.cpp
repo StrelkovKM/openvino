@@ -295,22 +295,6 @@ const std::vector<ExecutorImplementation<ConvAttrs>>& getImplementations() {
             CreateDnnlDefault<DnnlConvolutionPrimitive, ConvAttrs>{}
             )
 
-        OV_CPU_INSTANCE_RISCV64(
-            "convolution_dnnl_nspc_nspc", ExecutorType::Dnnl, OperationType::Convolution,
-            // supports
-            [](const ConvConfig& config, const MemoryFormatFilter& memoryFormatFilter) -> bool {
-                VERIFY(!isQuantized(config), UNSUPPORTED_SRC_PRECISIONS);
-                VERIFY(config.attrs.postOps.empty(), UNSUPPORTED_POST_OPS);
-                return MatchesMemoryFormatFilter(config.descs,
-                                                 LayoutConfig{LayoutType::nspc, LayoutType::ncsp, LayoutType::nspc, LayoutType::nspc},
-                                                 memoryFormatFilter,
-                                                 dnnlConvolutionMappingNotation);
-            },
-            // createOptimalConfig
-            CreateOptimalConfigDefault{{LayoutType::nspc, LayoutType::ncsp, LayoutType::nspc, LayoutType::nspc}},
-            AcceptsAnyShape<ConvAttrs>,
-            CreateDnnlDefault<DnnlConvolutionPrimitive, ConvAttrs>{}
-            )
 
         OV_CPU_INSTANCE_RISCV64(
             "convolution_dnnl_ref_ncsp", ExecutorType::Dnnl, OperationType::Convolution,

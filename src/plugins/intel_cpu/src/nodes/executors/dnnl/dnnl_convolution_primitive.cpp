@@ -12,8 +12,10 @@
 #include <common/primitive_attr.hpp>
 #include <common/primitive_hashing_utils.hpp>
 #include <common/utils.hpp>
+#include <cstdlib>
 #include <cstddef>
 #include <cstdint>
+#include <iostream>
 #include <iterator>
 #include <map>
 #include <memory>
