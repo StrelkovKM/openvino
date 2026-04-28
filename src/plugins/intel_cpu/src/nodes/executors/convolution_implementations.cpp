@@ -313,7 +313,7 @@ const std::vector<ExecutorImplementation<ConvAttrs>>& getImplementations() {
             CreateDnnlDefault<DnnlConvolutionPrimitive, ConvAttrs>{}
             )
     };
- 
+
     return convolutionImplementations;
 }
 // clang-format on
