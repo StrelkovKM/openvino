@@ -276,8 +276,6 @@ const std::vector<ExecutorImplementation<ConvAttrs>>& getImplementations() {
             AcceptsAnyShape<ConvAttrs>,
             CreateDnnlDefault<DnnlConvolutionPrimitive, ConvAttrs>{}
             )
-        
-
         OV_CPU_INSTANCE_RISCV64(
             "convolution_dnnl_ncsp_ncsp", ExecutorType::Dnnl, OperationType::Convolution,
             // supports
