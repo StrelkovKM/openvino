@@ -80,12 +80,6 @@ impl_desc_type parse_impl_name(std::string impl_desc_name) {
     if ((res & jit) && (res & any)) {
         res = static_cast<impl_desc_type>(res & ~any);
     }
-    // Map gemm:ref to gemm_any so it can match existing priority lists.
-#if defined(OPENVINO_ARCH_RISCV64) || defined(DNNL_RV64) || defined(RISCV64) || defined(__riscv)
-    if ((res & impl_desc_type::gemm) && (res & impl_desc_type::ref)) {
-        res = impl_desc_type::gemm_any;
-    }
-#endif
     return res;
 }
 
