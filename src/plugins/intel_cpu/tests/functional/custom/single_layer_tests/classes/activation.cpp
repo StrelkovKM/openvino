@@ -267,8 +267,8 @@ std::string ActivationLayerCPUTest::getPrimitiveType(const utils::ActivationType
             (activation_type == utils::ActivationTypes::Sigmoid) ||
             (activation_type == utils::ActivationTypes::SoftSign) ||
             (activation_type == utils::ActivationTypes::Sqrt) ||
-            (activation_type == utils::ActivationTypes::Tanh) ||
-            (activation_type == utils::ActivationTypes::ErfInv))
+            (activation_type == utils::ActivationTypes::Swish) ||
+            (activation_type == utils::ActivationTypes::Tanh))
             return "jit";
     }
 #endif

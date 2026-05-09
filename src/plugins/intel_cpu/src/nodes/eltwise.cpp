@@ -950,6 +950,8 @@ void Eltwise::appendPostOpsImpl(dnnl::post_ops& ops,
         case dnnl::algorithm::eltwise_hsigmoid:
         case dnnl::algorithm::eltwise_round_half_to_even:
         case dnnl::algorithm::eltwise_round_half_away_from_zero:
+            printf("=== ONEDNN SWISH CALLED! alpha=%f ===\n", static_cast<float>(getAlpha()));
+
             ops.append_eltwise(getOneDnnAlgorithm(), static_cast<float>(getAlpha()), static_cast<float>(getBeta()));
             break;
         default:
